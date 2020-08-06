@@ -49,19 +49,19 @@ local function create_adjacent_predicate(match_successive_nodes)
   end
 end
 
-function M.check_predicate(query, match, pred)
+function M.check_predicate(query, match, pred, bufnr)
   local check_function = M[pred[1]]
   if check_function then
-    return check_function(query, match, pred)
+    return check_function(query, match, pred, bufnr)
   else
     return true
   end
 end
 
-function M.check_negated_predicate(query, match, pred)
+function M.check_negated_predicate(query, match, pred, bufnr)
   local check_function = M[string.sub(pred[1], #"not-" + 1)]
   if check_function then
-    return not check_function(query, match, pred)
+    return not check_function(query, match, pred, bufnr)
   else
     return true
   end
@@ -106,6 +106,19 @@ M['has-ancestor?'] = function(query, match, pred)
     node = node:parent()
   end
   return false
+end
+
+M['is?'] = function(query, match, pred, bufnr)
+  if #pred < 3 then error("is? must have at least two arguments!") end
+  local node = get_node(query, match, pred[2])
+  local def_types = {unpack(pred, 3)}
+  if not node then return true end
+
+  -- Require here to avoid circular dependencies!
+  local ts_locals = require 'nvim-treesitter.locals'
+  local _, _, kind = ts_locals.find_definition(node, bufnr)
+
+  return kind and vim.tbl_contains(def_types, kind)
 end
 
 M['adjacent?'] = create_adjacent_predicate(false)

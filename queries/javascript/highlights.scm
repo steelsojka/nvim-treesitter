@@ -5,19 +5,20 @@
 ;--------------------
 
 ((identifier) @constant
- (#match? @constant "^[A-Z_][A-Z\\d_]+$"))
+ (match? @constant "^[A-Z_][A-Z\\d_]+$"))
 
 ((shorthand_property_identifier) @constant
- (#match? @constant "^[A-Z_][A-Z\\d_]+$"))
+ (match? @constant "^[A-Z_][A-Z\\d_]+$"))
 
 ((identifier) @constructor
- (#match? @constructor "^[A-Z]"))
+ (match? @constructor "^[A-Z]"))
 
 ((identifier) @variable.builtin
- (#match? @variable.builtin "^(arguments|module|console|window|document)$"))
+ (match? @variable.builtin "^(arguments|module|console|window|document)$"))
 
 ((identifier) @function.builtin
- (#eq? @function.builtin "require"))
+ (eq? @function.builtin "require")
+ (not-is? @function.builtin parameter var import))
 
 ; Function and method definitions
 ;--------------------------------
@@ -78,7 +79,11 @@
   (rest_parameter
     (identifier) @parameter))
 
-(identifier) @variable
+((identifier) @variable
+  (is? @variable var))
+
+((identifier) @parameter
+  (is? @parameter parameter))
 
 ; Properties
 ;-----------

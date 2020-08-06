@@ -80,7 +80,7 @@ M.node_incremental = select_incremental(function(node)
 end)
 
 M.scope_incremental = select_incremental(function(node)
-  return locals.containing_scope(node:parent() or node)
+  return locals.containing_scope(node:parent() or node) or node
 end)
 
 function M.node_decremental()

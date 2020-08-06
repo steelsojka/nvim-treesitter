@@ -155,8 +155,8 @@ function M.iter_prepared_matches(query, qnode, bufnr, start_row, end_row)
 
           -- predicates
           if type(pred[1]) == 'string' then
-            if not predicates.check_predicate(query, prepared_match, pred) or
-               not predicates.check_negated_predicate(query, prepared_match, pred) then
+            if not predicates.check_predicate(query, prepared_match, pred, bufnr) or
+               not predicates.check_negated_predicate(query, prepared_match, pred, bufnr) then
               return iterator()
             end
           end
