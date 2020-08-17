@@ -33,6 +33,13 @@ local builtin_modules = {
     custom_captures = {},
     is_supported = queries.has_highlights
   },
+  semantic_highlight = {
+    module_path = 'nvim-treesitter.semantic_highlight',
+    enable = false,
+    disable = {},
+    custom_captures = {},
+    is_supported = queries.has_semantic_highlights
+  },
   incremental_selection = {
     module_path = 'nvim-treesitter.incremental_selection',
     enable = false,
